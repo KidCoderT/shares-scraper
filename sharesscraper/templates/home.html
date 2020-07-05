@@ -1,13 +1,46 @@
 {% extends 'base_layout.html' %}
 
 {% block tableData %}
-{% for foo in range(0, number) %}
-    <tr>
-        <th>{{ foo + 1 }}</th>
-        <th>{{ table_data[foo][0] }}</th>
-        <th>{{ table_data[foo][1] }}</th>
-        <th>{{ table_data[foo][2] }}</th>
-    </tr>
-{% endfor %}
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+
+            {% for category, message in messages %}
+                {% if category == "warning" %}
+                    <div class="notification is-warning is-light">
+                        {{ message }}
+                    </div>
+                {% elif category == "error" %}
+                    <div class="notification is-danger is-light">
+                        {{ message }}
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+        
+        {% endif %}
+    {% endwith %}
+
+    {% for foo in range(0, number) %}
+        <tr>
+            <th>{{ foo + 1 }}</th>
+            <th>{{ table_data[foo][0] }}</th>
+            <th>{{ table_data[foo][1] }}</th>
+            <th>{{ table_data[foo][2] }}</th>
+        </tr>
+    {% endfor %}
+
+{% endblock %}
+
+{% block searchForm %}
+<div class="box">
+    <form class="field has-addons has-addons-centered" action="/" method="POST">
+        <p class="control">
+            <input class="input" type="text" placeholder="e.g Radhakishan Damani" name="searchObject">
+        </p>
+        <p class="control">
+            <input class="button is-primary" type="submit" placeholder="Submit">
+        </p>
+    </form>
+</div>
 {% endblock %}
