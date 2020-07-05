@@ -1,1 +1,13 @@
 {% extends 'base_layout.html' %}
+
+{% block tableData %}
+{% for foo in range(0, number) %}
+    <tr>
+        <th>{{ foo + 1 }}</th>
+        <th>{{ table_data[foo][0] }}</th>
+        <th>{{ table_data[foo][1] }}</th>
+        <th>{{ table_data[foo][2] }}</th>
+    </tr>
+{% endfor %}
+
+{% endblock %}
