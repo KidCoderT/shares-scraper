@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <title>{% block title %}SharesScraper!{% endblock %}</title>
+    {% block style %}{% endblock %}
+</head>
+<body>
+
+<section class="hero is-primary is-medium">
+    <!-- Hero head: will stick at the top -->
+    <div class="hero-head">
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <a class="navbar-item title is-11">
+                        <a class="navbar-item is-active">
+                            Home
+                        </a>
+                    </a>
+                </div>
+                <div id="navbarMenuHeroA" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a class="navbar-item">
+                            See My Portfolio!!
+                        </a>
+                        <a class="navbar-item">
+                            More About Me!!
+                        </a>
+                        <span class="navbar-item">
+                                <a class="button is-primary is-inverted">
+                                    <span class="icon">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                    <span>Contact Me</span>
+                                </a>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Hero content: will be in the middle -->
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <h1 class="title is-1">
+                SharesScraper
+            </h1>
+            <h2 class="subtitle">
+                A Place where you can find the best Sharers of the country and share just like them!
+            </h2>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="box" style="margin: 50px 0px;">
+        <div class="table-container">
+            <table class="table is-fullwidth is-hoverable is-bordered">
+                <thead>
+                <tr>
+                    <th><abbr title="Sn">Serial No.</abbr></th>
+                    <th><abbr title="Name">Name</abbr></th>
+                    <th><abbr title="net_worth">Net_Worth</abbr></th>
+                    <th><abbr title="companies">Companies</abbr></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>1</th>
+                    <th>Radhakishan Damani</th>
+                    <th>75,964.3 Cr</th>
+                    <th>7</th>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <th>Rakesh Jhunjhunwala</th>
+                    <th>930168.7 Cr</th>
+                    <th>30</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="box">
+            <div class="field has-addons has-addons-centered">
+                <p class="control">
+                    <input class="input" type="text" placeholder="e.g Radhakishan Damani">
+                </p>
+                <p class="control">
+                    <input class="button is-primary" type="submit" placeholder="Submit">
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% block pageContent %}{% endblock %}
+
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+{% block script %}{% endblock %}
+</body>
+</html>
