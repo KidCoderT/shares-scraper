@@ -1,10 +1,10 @@
 from flask import render_template, request, flash
 from sharesscraper import app
-from sharesscraper.data import my_table_data
+from sharesscraper.data import my_table_data, detailed_data
 
 
 @app.route('/', methods=['GET', 'POST'])
-def hello_world():
+def home_view():
     if request.method == "POST":
         search_object = request.form.get('searchObject')
         if search_object == '':
@@ -24,3 +24,7 @@ def hello_world():
 
     return render_template('home.html', table_data=my_table_data, number=len(my_table_data))
 
+@app.route('/<index>/detail')
+def detail_view(index):
+    print(my_table_data[int(index)][3])
+    return render_template('detail.html')

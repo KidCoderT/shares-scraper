@@ -1,5 +1,15 @@
 {% extends 'base_layout.html' %}
 
+{% block style %}
+    <style>
+
+        th a {
+            color: black;
+        }
+
+    </style>
+{% endblock %}
+
 {% block tableData %}
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -24,7 +34,7 @@
     {% for foo in range(0, number) %}
         <tr>
             <th>{{ foo + 1 }}</th>
-            <th>{{ table_data[foo][0] }}</th>
+            <th>{{ table_data[foo][0] }}<a href="/{{ foo + 1 }}/detail"><i class="fas fa-location-arrow"></i></a></th>
             <th>{{ table_data[foo][1] }}</th>
             <th>{{ table_data[foo][2] }}</th>
         </tr>

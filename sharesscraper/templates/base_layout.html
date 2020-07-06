@@ -20,9 +20,12 @@
                         <a class="navbar-item is-active" href="/">
                             Home
                         </a>
-                        <a class="navbar-item" href="/">
-                            <i class="fas fa-sync-alt"></i>
-                        </a>
+                        {% block reset %}
+                            <a class="navbar-item" href="/">
+                                <i class="fas fa-sync-alt"></i>
+                            </a>
+                        {% endblock %}
+
                     </a>
                 </div>
                 <div id="navbarMenuHeroA" class="navbar-menu">
@@ -51,10 +54,12 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <h1 class="title is-1">
-                SharesScraper
+                {% block heroTitle %}SharesScraper{% endblock %}
             </h1>
             <h2 class="subtitle">
-                A Place where you can find the best Sharers of the country and share just like them!
+                {% block heroSubtitle %}
+                    A Place where you can find the best Sharers of the country and share just like them!
+                {% endblock %}
             </h2>
         </div>
     </div>
@@ -62,29 +67,34 @@
 
 <div class="container">
     <div class="box" style="margin: 50px 0px;">
-        <div class="table-container">
-            <table class="table is-fullwidth is-hoverable is-bordered">
-                <thead>
-                <tr>
-                    <th><abbr title="Sn">Serial No.</abbr></th>
-                    <th><abbr title="Name">Name</abbr></th>
-                    <th><abbr title="net_worth">Net_Worth</abbr></th>
-                    <th><abbr title="companies">Companies</abbr></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% block tableData %}{% endblock %}
-                </tbody>
-            </table>
-        </div>
+        {% block pageContent %}
 
-        {% block searchForm %}{% endblock %}
+            <div class="table-container">
+                <table class="table is-fullwidth is-hoverable is-bordered">
+                    <thead>
+                    <tr>
+                        <th><abbr title="Sn">Serial No.</abbr></th>
+                        <th><abbr title="Name">Name</abbr></th>
+                        <th><abbr title="net_worth">Net_Worth</abbr></th>
+                        <th><abbr title="companies">Companies</abbr></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% block tableData %}{% endblock %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% block searchForm %}{% endblock %}
+
+        {% endblock %}
     </div>
 
 </div>
 
-{% block pageContent %}{% endblock %}
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 {% block script %}{% endblock %}
 </body>
