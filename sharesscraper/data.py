@@ -20,13 +20,13 @@ for div in page_rows:
     for foo in splited_data:
         final_string += f"/{foo}"
     my_table_data.append((
-        div.find("div", class_="col-lg-5").find("a").text,  # The Name
-        div.find_all("div", class_="col-lg-3")[1].text,  # The Net Worth
-        div.find_all("div", class_="col-lg-3")[0].text,  # The Companies
-        "https://trendlyne.com" + str(final_string)  # The detailed url
+        div.find("div", class_="col-lg-5").find("a").text,
+        div.find_all("div", class_="col-lg-3")[1].text,
+        div.find_all("div", class_="col-lg-3")[0].text,
+        ["https://trendlyne.com" + str(final_string), "https://trendlyne.com" + div.find("div", class_="col-lg-5").find("a").get("href")]
     ))
 
-def detailed_data(url):
+def detailed_data(url, name):
     data = {
         "name": "",
         "heroTile": "",
@@ -42,7 +42,9 @@ def detailed_data(url):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'lxml')
 
-    data["heroTile"] = soup.find("div", class_="container-fluid content-wrapper").find_all("div", class_="row")[0].find("div", class_="col-md-12 col-xs-12 card m0 p-t-2 p-x-1 p-x-2-md-up nobdrrad").find("div", class_="col-xs-12 m-b-1 p-x-0").find("div", class_="em17").text
+    data["name"] = name
+
+    data["heroTitle"] = soup.find("div", class_="container-fluid content-wrapper").find_all("div", class_="row")[0].find("div", class_="col-md-12 col-xs-12 card m0 p-t-2 p-x-1 p-x-2-md-up nobdrrad").find("div", class_="col-xs-12 m-b-1 p-x-0").find("div", class_="em17").text
 
     heroSubtitle = soup.find("div", class_="container-fluid content-wrapper").find_all("div", class_="row")[0].find("div", class_="col-md-12 col-xs-12 card m0 p-t-2 p-x-1 p-x-2-md-up nobdrrad").find("div", class_="col-xs-12 m-b-1 p-x-0").find_all("div")[2].find_all("p", class_="m-t-1")
     data["heroSubtitle"].append(heroSubtitle[0].text)
@@ -56,7 +58,7 @@ def detailed_data(url):
     chart_data["netWorthHistoryData"] = []
     for i in net_worth:
         chart_data["netWorthHistoryData"].append(
-            {'month': i[0], 'net worth': i[1]}
+            {'month': i[0], 'netWorth': i[1]}
         )
 
     bought_shares = json.loads(chart_table[1].find("div", class_="Ltop nobdr gchart PieChart newE").find("div", class_="nav-link gchartLink active cen full-width").get("data-jsondata"))

@@ -1,4 +1,5 @@
 from flask import render_template, request, flash
+import json
 from sharesscraper import app
 from sharesscraper.data import my_table_data, detailed_data
 
@@ -26,5 +27,5 @@ def home_view():
 
 @app.route('/<index>/detail')
 def detail_view(index):
-    print(my_table_data[int(index)][3])
-    return render_template('detail.html')
+    data, chart_data = detailed_data(my_table_data[int(index) - 1][3][0], my_table_data[int(index) - 1][0])
+    return render_template('detail.html', data=data, net_worth=chart_data["netWorthHistoryData"], bought_shares=chart_data["boughtSharesInData"], sold_shares=chart_data["soldSharesIn"])
