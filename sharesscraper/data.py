@@ -1,4 +1,5 @@
 import lxml
+import json
 import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -26,5 +27,62 @@ for div in page_rows:
     ))
 
 def detailed_data(url):
-    print(url)
+    data = {
+        "name": "",
+        "heroTile": "",
+        "heroSubtitle": []
+    }
+
+    chart_data = {
+        "boughtSharesInData": {},
+        "soldSharesIn": {},
+        "netWorthHistoryData": {}
+    }
+
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'lxml')
+
+    data["heroTile"] = soup.find("div", class_="container-fluid content-wrapper").find_all("div", class_="row")[0].find("div", class_="col-md-12 col-xs-12 card m0 p-t-2 p-x-1 p-x-2-md-up nobdrrad").find("div", class_="col-xs-12 m-b-1 p-x-0").find("div", class_="em17").text
+
+    heroSubtitle = soup.find("div", class_="container-fluid content-wrapper").find_all("div", class_="row")[0].find("div", class_="col-md-12 col-xs-12 card m0 p-t-2 p-x-1 p-x-2-md-up nobdrrad").find("div", class_="col-xs-12 m-b-1 p-x-0").find_all("div")[2].find_all("p", class_="m-t-1")
+    data["heroSubtitle"].append(heroSubtitle[0].text)
+    data["heroSubtitle"].append(heroSubtitle[1].text)
+
+    chart_table = soup.find("div", class_="container-fluid content-wrapper").find_all("div", class_="row")[4].find("div", class_="col-xs-12 card tlcard p-y-2 p-x-1").find("div", class_="tl_carousel").find("div", class_="scrolling-wrapper").find("div", class_="row").find_all("div", class_="col-xs-12 col-md-6 col-lg-4 m-b-1 p-x-0 scroll-card p-x-1")
+
+    net_worth = json.loads(chart_table[0].find("div", class_="Ltop nobdr gchart PieChart newE").find("div", class_="nav-link gchartLink active cen full-width").get("data-jsondata"))
+    del net_worth[0]
+
+    chart_data["netWorthHistoryData"] = []
+    for i in net_worth:
+        chart_data["netWorthHistoryData"].append(
+            {'month': i[0], 'net worth': i[1]}
+        )
+
+    bought_shares = json.loads(chart_table[1].find("div", class_="Ltop nobdr gchart PieChart newE").find("div", class_="nav-link gchartLink active cen full-width").get("data-jsondata"))
+    for i in range(0, len(bought_shares)):
+        del bought_shares[i][2]
+    del bought_shares[0]
+
+    chart_data["boughtSharesInData"] = []
+    for i in bought_shares:
+        chart_data["boughtSharesInData"].append(
+            {'company': i[0], 'shares': i[1]}
+        )
+
+    sold_shares = json.loads(chart_table[2].find("div", class_="Ltop nobdr gchart PieChart newE").find("div", class_="nav-link gchartLink active cen full-width").get("data-jsondata"))
+    for i in range(0, len(sold_shares)):
+        del sold_shares[i][2]
+    del sold_shares[0]
+
+    chart_data["soldSharesIn"] = []
+    for i in sold_shares:
+        chart_data["soldSharesIn"].append(
+            {'company': i[0], 'shares': i[1]}
+        )
+
+    return data, chart_data
+
+
+
 
