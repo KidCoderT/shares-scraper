@@ -55,33 +55,39 @@ def detailed_data(url, name):
     net_worth = json.loads(chart_table[0].find("div", class_="Ltop nobdr gchart PieChart newE").find("div", class_="nav-link gchartLink active cen full-width").get("data-jsondata"))
     del net_worth[0]
 
-    chart_data["netWorthHistoryData"] = []
+    chart_data["netWorthHistoryData"] = {
+        "xData": [],
+        "yData": []
+    }
     for i in net_worth:
-        chart_data["netWorthHistoryData"].append(
-            {'month': i[0], 'netWorth': i[1]}
-        )
+        chart_data["netWorthHistoryData"]["xData"].append(i[0])
+        chart_data["netWorthHistoryData"]["yData"].append(i[1])
 
     bought_shares = json.loads(chart_table[1].find("div", class_="Ltop nobdr gchart PieChart newE").find("div", class_="nav-link gchartLink active cen full-width").get("data-jsondata"))
     for i in range(0, len(bought_shares)):
         del bought_shares[i][2]
     del bought_shares[0]
 
-    chart_data["boughtSharesInData"] = []
+    chart_data["boughtSharesInData"] = {
+        "xData": [],
+        "yData": []
+    }
     for i in bought_shares:
-        chart_data["boughtSharesInData"].append(
-            {'company': i[0], 'shares': i[1]}
-        )
+        chart_data["boughtSharesInData"]["xData"].append(i[0])
+        chart_data["boughtSharesInData"]["yData"].append(i[1])
 
     sold_shares = json.loads(chart_table[2].find("div", class_="Ltop nobdr gchart PieChart newE").find("div", class_="nav-link gchartLink active cen full-width").get("data-jsondata"))
     for i in range(0, len(sold_shares)):
         del sold_shares[i][2]
     del sold_shares[0]
 
-    chart_data["soldSharesIn"] = []
+    chart_data["soldSharesIn"] = {
+        "xData": [],
+        "yData": []
+    }
     for i in sold_shares:
-        chart_data["soldSharesIn"].append(
-            {'company': i[0], 'shares': i[1]}
-        )
+        chart_data["soldSharesIn"]["xData"].append(i[0])
+        chart_data["soldSharesIn"]["yData"].append(i[1])
 
     return data, chart_data
 

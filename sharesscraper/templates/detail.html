@@ -58,32 +58,82 @@
     <script>
 
     class newChartjsChart {
-        constructor(elementId, chartType, xData, yData, label, optionsList) {
+        constructor(elementId, chartType, xData, yData, label, optionsList, barDE) {
             this.ctx = document.getElementById(elementId).getContext('2d');
             this.chartType = chartType;
             this.xData = xData;
             this.yData = yData;
             this.label = label;
             this.optionsList = optionsList;
+            this.barType = barDE
         }
 
         createChart() {
-            this.myChart = new Chart(this.ctx, {
-                // The type of chart we want to create
-                type: this.chartType,
 
-                // The data for our dataset
-                data: {
-                    labels: this.xData,
-                    datasets: [{
-                        label: this.label,
-                        data: this.yData
-                    }]
-                },
+            if (this.chartType === "bar") {
 
-                // Configuration options go here
-                options: this.optionsList
-            });
+                if (this.barType === "I") {
+                    this.myChart = new Chart(this.ctx, {
+                        // The type of chart we want to create
+                        type: this.chartType,
+
+                        // The data for our dataset
+                        data: {
+                            labels: this.xData,
+                            datasets: [{
+                                label: this.label,
+                                backgroundColor: "#5CB85C",
+                                data: this.yData
+                            }]
+                        },
+
+                        // Configuration options go here
+                        options: this.optionsList
+                    });
+                } else if (this.barType === "D") {
+                    this.myChart = new Chart(this.ctx, {
+                        // The type of chart we want to create
+                        type: this.chartType,
+
+                        // The data for our dataset
+                        data: {
+                            labels: this.xData,
+                            datasets: [{
+                                label: this.label,
+                                backgroundColor: "#D9534F",
+                                data: this.yData
+                            }]
+                        },
+
+                        // Configuration options go here
+                        options: this.optionsList
+                    });
+                }
+
+
+
+            } else if (this.chartType === "line") {
+
+                this.myChart = new Chart(this.ctx, {
+                    // The type of chart we want to create
+                    type: this.chartType,
+
+                    // The data for our dataset
+                    data: {
+                        labels: this.xData,
+                        datasets: [{
+                            label: this.label,
+                            data: this.yData,
+                            borderColor: "#2A76D9",
+                            fill: false
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: this.optionsList
+                });
+
+            }
         }
     }
 
@@ -91,13 +141,11 @@
     chart1 = new newChartjsChart(
         'myfirstchart',
         'bar',
-        ["Africa", "Asia", "Europe", "Latin America", "North America"],
-        [2478,5267,734,784,433],
-        "Population (millions)",
-        {
-            legend: { display: false },
-            title: { display: false }
-        }
+        {{ bought_shares["xData"]|tojson }},
+        {{ bought_shares["yData"]|tojson }},
+        "Increase in holdings (%)",
+        {},
+        "I"
     );
     chart1.createChart();
 
@@ -105,13 +153,11 @@
     chart2 = new newChartjsChart(
         'mysecondchart',
         'bar',
-        ["Africa", "Asia", "Europe", "Latin America", "North America"],
-        [2478,5267,734,784,433],
-        "Population (millions)",
-        {
-            legend: { display: false },
-            title: { display: false }
-        }
+        {{ sold_shares["xData"]|tojson }},
+        {{ sold_shares["yData"]|tojson }},
+        "Decrease in holdings (%)",
+        {},
+        "D"
     );
     chart2.createChart();
 
@@ -119,10 +165,11 @@
     chart3 = new newChartjsChart(
         'mythirdchart',
         'line',
-        ["Africa", "Asia", "Europe", "Latin America", "North America"],
-        [2478,5267,734,784,433],
-        "Population (millions)",
-        {}
+        {{ net_worth["xData"]|tojson }},
+        {{ net_worth["yData"]|tojson }},
+        "Net Worth (Cr)",
+        {},
+        ""
     );
     chart3.createChart();
 
