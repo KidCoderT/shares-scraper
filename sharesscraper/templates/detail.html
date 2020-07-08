@@ -32,14 +32,14 @@
         <div class="column">
             <div class="box">
                 <h1 class="chartTitle">{{ data["name"] }} bought shares in</h1>
-                <div id="myfirstchart"></div>
+                <canvas id="myfirstchart"></canvas>
             </div>
         </div>
 
         <div class="column">
             <div class="box">
                 <h1 class="chartTitle">{{ data["name"] }} sold shares in</h1>
-                <div id="mysecondchart"></div>
+                <canvas id="mysecondchart"></canvas>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
 
     <div class="box">
         <h1 class="chartTitle">{{ data["name"] }} Net Worth History</h1>
-        <div id="mythirdchart"></div>
+        <canvas id="mythirdchart"></canvas>
     </div>
 
 
@@ -55,6 +55,78 @@
 
 {% block script %}
 
-    <script></script>
+    <script>
+
+    class newChartjsChart {
+        constructor(elementId, chartType, xData, yData, label, optionsList) {
+            this.ctx = document.getElementById(elementId).getContext('2d');
+            this.chartType = chartType;
+            this.xData = xData;
+            this.yData = yData;
+            this.label = label;
+            this.optionsList = optionsList;
+        }
+
+        createChart() {
+            this.myChart = new Chart(this.ctx, {
+                // The type of chart we want to create
+                type: this.chartType,
+
+                // The data for our dataset
+                data: {
+                    labels: this.xData,
+                    datasets: [{
+                        label: this.label,
+                        data: this.yData
+                    }]
+                },
+
+                // Configuration options go here
+                options: this.optionsList
+            });
+        }
+    }
+
+
+    chart1 = new newChartjsChart(
+        'myfirstchart',
+        'bar',
+        ["Africa", "Asia", "Europe", "Latin America", "North America"],
+        [2478,5267,734,784,433],
+        "Population (millions)",
+        {
+            legend: { display: false },
+            title: { display: false }
+        }
+    );
+    chart1.createChart();
+
+
+    chart2 = new newChartjsChart(
+        'mysecondchart',
+        'bar',
+        ["Africa", "Asia", "Europe", "Latin America", "North America"],
+        [2478,5267,734,784,433],
+        "Population (millions)",
+        {
+            legend: { display: false },
+            title: { display: false }
+        }
+    );
+    chart2.createChart();
+
+
+    chart3 = new newChartjsChart(
+        'mythirdchart',
+        'line',
+        ["Africa", "Asia", "Europe", "Latin America", "North America"],
+        [2478,5267,734,784,433],
+        "Population (millions)",
+        {}
+    );
+    chart3.createChart();
+
+
+    </script>
 
 {% endblock %}
