@@ -1,0 +1,153 @@
+{% extends 'base_layout.html' %}
+
+{% block heroTitle %}
+{{ data["heroTitle"] }}
+{% endblock %}
+
+{% block heroSubtitle %}
+{{ data["heroSubtitle"][0] }}
+    <hr>
+{{ data["heroSubtitle"][1] }}
+{% endblock %}
+
+{% block pageContent %}
+
+    <div class="columns">
+        <div class="column">
+            <div class="box">
+                <h1 class="chartTitle">{{ data.name }} bought shares in</h1>
+                <div class="chartContainer">
+                    <canvas id="myfirstchart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="box">
+                <h1 class="chartTitle">{{ data.name }} sold shares in</h1>
+                <div class="chartContainer">
+                    <canvas id="mysecondchart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="box">
+        <h1 class="chartTitle">{{ data.name }} Net Worth History</h1>
+        <div class="chartContainer">
+            <canvas id="mythirdchart"></canvas>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+
+    Chart.defaults.global.defaultFontSize = 9;
+    Chart.defaults.global.defaultFontStyle = "bold";
+
+    class newChartjsChart {
+        constructor(chartType, elementId, xData, yData, label, graphId) {
+            this.ctx = document.getElementById(elementId).getContext('2d');
+            this.chartType = chartType;
+            this.xData = xData;
+            this.yData = yData;
+            this.label = label;
+            this.optionsList = {};
+            this.graphId = graphId;
+            this.colorScheme = "";
+            this.fillOrNot = true;
+            this.dataSet = [{}];
+        }
+
+        setChartDataProperties() {
+            if (this.chartType === "bar") {
+
+                if (this.graphId === "Increase") {
+                    this.colorScheme = ["#5CB85C", "#3BD63B"];
+
+                } else if (this.graphId === "Decrease") {
+                    this.colorScheme = ["#D9534F", "#E53937"];
+
+                }
+
+                this.dataSet[0].label = this.label;
+                this.dataSet[0].data = this.yData;
+                this.dataSet[0].borderColor = this.colorScheme[0];
+                this.dataSet[0].backgroundColor = this.colorScheme[1];
+
+            } else if (this.chartType === "line") {
+                this.colorScheme = ["#2A76D9", "#4190F2"];
+
+
+                this.dataSet[0].label = this.label;
+                this.dataSet[0].data = this.yData;
+                this.dataSet[0].borderColor = this.colorScheme[0];
+                this.dataSet[0].lineTension = 0.2;
+                this.dataSet[0].fill = this.fillOrNot;
+                this.dataSet[0].backgroundColor = this.colorScheme[1];
+
+            }
+        }
+
+        createChart() {
+
+            this.setChartDataProperties();
+
+            this.myChart = new Chart(this.ctx, {
+                // The type of chart we want to create
+                type: this.chartType,
+
+                // The data for our dataset
+                data: {
+                    labels: this.xData,
+                    datasets: this.dataSet
+                },
+
+                // Configuration options go here
+                options: this.optionsList
+            });
+
+        }
+    }
+
+
+    chart1 = new newChartjsChart(
+        'bar',
+        'myfirstchart',
+        {{ bought_shares["xData"] | tojson }},
+        {{ bought_shares["yData"] | tojson }},
+        'Increase in holdings (%)',
+        'Increase'
+    );
+    chart1.createChart();
+
+
+    chart2 = new newChartjsChart(
+        'bar',
+        'mysecondchart',
+        {{ sold_shares["xData"] | tojson }},
+        {{ sold_shares["yData"] | tojson }},
+        'Decrease in holdings (%)',
+        'Decrease'
+    );
+    chart2.createChart();
+
+
+    chart3 = new newChartjsChart(
+        'line',
+        'mythirdchart',
+        {{ net_worth["xData"] | tojson }},
+        {{ net_worth["yData"] | tojson }},
+        'Net Worth (Cr)',
+        'Net Worth'
+    )
+    chart3.createChart();
+
+    </script>
+
+{% endblock %}
