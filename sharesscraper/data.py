@@ -13,6 +13,7 @@ page_table = soup.find("div", class_="content-wrapper").find("div", class_="tl_c
     "div", class_="row").find("div", class_="card")
 page_rows = page_table.find_all("div", class_="dbdr")
 
+index = 1
 for div in page_rows:
     splited_data = div.find("div", class_="col-lg-5").find("a").get("href").split('/')
     splited_data[4] = f"Q1-{datetime.today().year}"
@@ -23,10 +24,13 @@ for div in page_rows:
         div.find("div", class_="col-lg-5").find("a").text,
         div.find_all("div", class_="col-lg-3")[1].text,
         div.find_all("div", class_="col-lg-3")[0].text,
-        ["https://trendlyne.com" + str(final_string), "https://trendlyne.com" + div.find("div", class_="col-lg-5").find("a").get("href")]
+        "https://trendlyne.com" + str(final_string), # "https://trendlyne.com" + div.find("div", class_="col-lg-5").find("a").get("href")
+        index
     ))
 
-def detailed_data(url, name):
+    index += 1
+
+def detailed_data(url, dataset):
     data = {
         "name": "",
         "heroTile": "",
@@ -42,13 +46,17 @@ def detailed_data(url, name):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'lxml')
 
-    data["name"] = name
+    data["name"] = dataset[0]
 
     data["heroTitle"] = soup.find("div", class_="container-fluid content-wrapper").find_all("div", class_="row")[0].find("div", class_="col-md-12 col-xs-12 card m0 p-t-2 p-x-1 p-x-2-md-up nobdrrad").find("div", class_="col-xs-12 m-b-1 p-x-0").find("div", class_="em17").text
 
     heroSubtitle = soup.find("div", class_="container-fluid content-wrapper").find_all("div", class_="row")[0].find("div", class_="col-md-12 col-xs-12 card m0 p-t-2 p-x-1 p-x-2-md-up nobdrrad").find("div", class_="col-xs-12 m-b-1 p-x-0").find_all("div")[2].find_all("p", class_="m-t-1")
-    data["heroSubtitle"].append(heroSubtitle[0].text)
-    data["heroSubtitle"].append(heroSubtitle[1].text)
+    data["heroSubtitle"].append(
+        f"As per the latest corporate shareholdings filed, {dataset[0]} publicly holds {dataset[2]} stocks with a net worth of over Rs.{dataset[1]}."
+    )
+    data["heroSubtitle"].append(
+        f"These are shares held by {dataset[0]} as per the shareholding data filed with the exchanges. The latest quarter tends to have missing data since not all companies may have reported their shareholding data till now."
+    )
 
     chart_table = soup.find("div", class_="container-fluid content-wrapper").find_all("div", class_="row")[4].find("div", class_="col-xs-12 card tlcard p-y-2 p-x-1").find("div", class_="tl_carousel").find("div", class_="scrolling-wrapper").find("div", class_="row").find_all("div", class_="col-xs-12 col-md-6 col-lg-4 m-b-1 p-x-0 scroll-card p-x-1")
 

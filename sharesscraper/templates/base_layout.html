@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <title>{% block title %}SharesScraper!{% endblock %}</title>
-    {% block style %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
@@ -20,7 +20,7 @@
                             Home
                         </a>
                         {% block reset %}
-                            <a class="navbar-item" href="/">
+                            <a class="navbar-item" href="#">
                                 <i class="fas fa-sync-alt"></i>
                             </a>
                         {% endblock %}
@@ -29,14 +29,14 @@
                 </div>
                 <div id="navbarMenuHeroA" class="navbar-menu">
                     <div class="navbar-end">
-                        <a class="navbar-item">
+                        <a class="navbar-item" onclick="alertUnfinishedFunctionality()">
                             See My Portfolio!!
                         </a>
-                        <a class="navbar-item">
+                        <a class="navbar-item" onclick="alertUnfinishedFunctionality()">
                             More About Me!!
                         </a>
                         <span class="navbar-item">
-                                <a class="button is-primary is-inverted">
+                                <a class="button is-primary is-inverted" onclick="alertUnfinishedFunctionality()">
                                     <span class="icon">
                                         <i class="fas fa-phone"></i>
                                     </span>
@@ -91,8 +91,21 @@
 
 </div>
 
+<footer class="footer is-primary ">
+  <div class="content has-text-centered">
+    <p class="title is-4">
+        This is Made by the <a href="https://github.com/KidCoderT" target="_blank">@KidCoderT<i class="fab fa-github-alt"></i></a>
+    </p>
+  </div>
+</footer>
+
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    function alertUnfinishedFunctionality() {
+        alert('Realy Sorry But I am still Yet to finish this feature of the application!!');
+    }
+</script>
 {% block script %}{% endblock %}
 </body>
 </html>

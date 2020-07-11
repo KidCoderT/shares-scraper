@@ -1,21 +1,5 @@
 {% extends 'base_layout.html' %}
 
-{% block style %}
-
-    <style>
-
-    .chartTitle {
-        font-weight: bold;
-        text-align: center;
-        text-decoration: underline;
-    }
-
-    </style>
-
-{% endblock %}
-
-{% block reset %}{% endblock %}
-
 {% block heroTitle %}
 {{ data["heroTitle"] }}
 {% endblock %}
@@ -31,23 +15,29 @@
     <div class="columns">
         <div class="column">
             <div class="box">
-                <h1 class="chartTitle">{{ data["name"] }} bought shares in</h1>
-                <canvas id="myfirstchart"></canvas>
+                <h1 class="chartTitle">{{ data.name }} bought shares in</h1>
+                <div class="chartContainer">
+                    <canvas id="myfirstchart"></canvas>
+                </div>
             </div>
         </div>
 
         <div class="column">
             <div class="box">
-                <h1 class="chartTitle">{{ data["name"] }} sold shares in</h1>
-                <canvas id="mysecondchart"></canvas>
+                <h1 class="chartTitle">{{ data.name }} sold shares in</h1>
+                <div class="chartContainer">
+                    <canvas id="mysecondchart"></canvas>
+                </div>
             </div>
         </div>
 
     </div>
 
     <div class="box">
-        <h1 class="chartTitle">{{ data["name"] }} Net Worth History</h1>
-        <canvas id="mythirdchart"></canvas>
+        <h1 class="chartTitle">{{ data.name }} Net Worth History</h1>
+        <div class="chartContainer">
+            <canvas id="mythirdchart"></canvas>
+        </div>
     </div>
 
 
@@ -57,122 +47,106 @@
 
     <script>
 
+    Chart.defaults.global.defaultFontSize = 9;
+    Chart.defaults.global.defaultFontStyle = "bold";
+
     class newChartjsChart {
-        constructor(elementId, chartType, xData, yData, label, optionsList, barDE) {
+        constructor(chartType, elementId, xData, yData, label, graphId) {
             this.ctx = document.getElementById(elementId).getContext('2d');
             this.chartType = chartType;
             this.xData = xData;
             this.yData = yData;
             this.label = label;
-            this.optionsList = optionsList;
-            this.barType = barDE
+            this.optionsList = {};
+            this.graphId = graphId;
+            this.colorScheme = "";
+            this.fillOrNot = true;
+            this.dataSet = [{}];
+        }
+
+        setChartDataProperties() {
+            if (this.chartType === "bar") {
+
+                if (this.graphId === "Increase") {
+                    this.colorScheme = ["#5CB85C", "#3BD63B"];
+
+                } else if (this.graphId === "Decrease") {
+                    this.colorScheme = ["#D9534F", "#E53937"];
+
+                }
+
+                this.dataSet[0].label = this.label;
+                this.dataSet[0].data = this.yData;
+                this.dataSet[0].borderColor = this.colorScheme[0];
+                this.dataSet[0].backgroundColor = this.colorScheme[1];
+
+            } else if (this.chartType === "line") {
+                this.colorScheme = ["#2A76D9", "#4190F2"];
+
+
+                this.dataSet[0].label = this.label;
+                this.dataSet[0].data = this.yData;
+                this.dataSet[0].borderColor = this.colorScheme[0];
+                this.dataSet[0].lineTension = 0.2;
+                this.dataSet[0].fill = this.fillOrNot;
+                this.dataSet[0].backgroundColor = this.colorScheme[1];
+
+            }
         }
 
         createChart() {
 
-            if (this.chartType === "bar") {
+            this.setChartDataProperties();
 
-                if (this.barType === "I") {
-                    this.myChart = new Chart(this.ctx, {
-                        // The type of chart we want to create
-                        type: this.chartType,
+            this.myChart = new Chart(this.ctx, {
+                // The type of chart we want to create
+                type: this.chartType,
 
-                        // The data for our dataset
-                        data: {
-                            labels: this.xData,
-                            datasets: [{
-                                label: this.label,
-                                backgroundColor: "#5CB85C",
-                                data: this.yData
-                            }]
-                        },
+                // The data for our dataset
+                data: {
+                    labels: this.xData,
+                    datasets: this.dataSet
+                },
 
-                        // Configuration options go here
-                        options: this.optionsList
-                    });
-                } else if (this.barType === "D") {
-                    this.myChart = new Chart(this.ctx, {
-                        // The type of chart we want to create
-                        type: this.chartType,
+                // Configuration options go here
+                options: this.optionsList
+            });
 
-                        // The data for our dataset
-                        data: {
-                            labels: this.xData,
-                            datasets: [{
-                                label: this.label,
-                                backgroundColor: "#D9534F",
-                                data: this.yData
-                            }]
-                        },
-
-                        // Configuration options go here
-                        options: this.optionsList
-                    });
-                }
-
-
-
-            } else if (this.chartType === "line") {
-
-                this.myChart = new Chart(this.ctx, {
-                    // The type of chart we want to create
-                    type: this.chartType,
-
-                    // The data for our dataset
-                    data: {
-                        labels: this.xData,
-                        datasets: [{
-                            label: this.label,
-                            data: this.yData,
-                            borderColor: "#2A76D9",
-                            fill: false
-                        }]
-                    },
-
-                    // Configuration options go here
-                    options: this.optionsList
-                });
-
-            }
         }
     }
 
 
     chart1 = new newChartjsChart(
-        'myfirstchart',
         'bar',
-        {{ bought_shares["xData"]|tojson }},
-        {{ bought_shares["yData"]|tojson }},
-        "Increase in holdings (%)",
-        {},
-        "I"
+        'myfirstchart',
+        {{ bought_shares["xData"] | tojson }},
+        {{ bought_shares["yData"] | tojson }},
+        'Increase in holdings (%)',
+        'Increase'
     );
     chart1.createChart();
 
 
     chart2 = new newChartjsChart(
-        'mysecondchart',
         'bar',
-        {{ sold_shares["xData"]|tojson }},
-        {{ sold_shares["yData"]|tojson }},
-        "Decrease in holdings (%)",
-        {},
-        "D"
+        'mysecondchart',
+        {{ sold_shares["xData"] | tojson }},
+        {{ sold_shares["yData"] | tojson }},
+        'Decrease in holdings (%)',
+        'Decrease'
     );
     chart2.createChart();
 
 
     chart3 = new newChartjsChart(
-        'mythirdchart',
         'line',
-        {{ net_worth["xData"]|tojson }},
-        {{ net_worth["yData"]|tojson }},
-        "Net Worth (Cr)",
-        {},
-        ""
-    );
+        'mythirdchart',
+        {{ net_worth["xData"] | tojson }},
+        {{ net_worth["yData"] | tojson }},
+        'Net Worth (Cr)',
+        'Net Worth'
+    )
     chart3.createChart();
-
 
     </script>
 

@@ -3,9 +3,7 @@
 {% block style %}
     <style>
 
-        th a {
-            color: black;
-        }
+
 
     </style>
 {% endblock %}
@@ -33,8 +31,8 @@
 
     {% for foo in range(0, number) %}
         <tr>
-            <th>{{ foo + 1 }}</th>
-            <th>{{ table_data[foo][0] }}<a href="/{{ foo + 1 }}/detail"><i class="fas fa-location-arrow"></i></a></th>
+            <th>{{ table_data[foo][4] }}</th>
+            <th>{{ table_data[foo][0] }}<a href="/{{ table_data[foo][4] }}/detail"><i class="fas fa-external-link-square-alt"></i></a></th>
             <th>{{ table_data[foo][1] }}</th>
             <th>{{ table_data[foo][2] }}</th>
         </tr>
