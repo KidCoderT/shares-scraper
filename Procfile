@@ -1,1 +1,1 @@
-web: gunicorn wsgi:sharesscraper
+web: gunicorn app:app
