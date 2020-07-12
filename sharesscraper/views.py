@@ -1,5 +1,5 @@
 from flask import render_template, request, flash
-from app import app
+from sharesscraper import app
 from data import my_table_data, detailed_data
 
 @app.route('/', methods=['GET', 'POST'])
