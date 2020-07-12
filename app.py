@@ -5,4 +5,7 @@ app.config.update(
     SECRET_KEY=b"asfsdft76rtdjghfy4uiut?/dl][fhfvnu6rgh",
 )
 
-from sharesscraper import views
+import views
+
+if __name__ == '__main__':
+    app.run(debug=True)

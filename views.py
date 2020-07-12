@@ -1,7 +1,6 @@
 from flask import render_template, request, flash
-from sharesscraper import app
-from sharesscraper.data import my_table_data, detailed_data
-
+from app import app
+from data import my_table_data, detailed_data
 
 @app.route('/', methods=['GET', 'POST'])
 def home_view():
