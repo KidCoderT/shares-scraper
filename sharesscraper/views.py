@@ -1,10 +1,5 @@
-from flask import Flask, render_template, request, flash
-from data import my_table_data, detailed_data
-
-app = Flask(__name__)
-app.config.update(
-    SECRET_KEY=b"asfsdft76rtdjghfy4uiut?/dl][fhfvnu6rgh",
-)
+from flask import render_template, request, flash
+from sharesscraper.data import my_table_data, detailed_data
 
 @app.route('/', methods=['GET', 'POST'])
 def home_view():
@@ -32,6 +27,3 @@ def detail_view(index):
     data, chart_data = detailed_data(my_table_data[int(index) - 1][3], my_table_data[int(index) - 1])
     return render_template('detail.html', data=data, net_worth=chart_data["netWorthHistoryData"], bought_shares=chart_data["boughtSharesInData"], sold_shares=chart_data["soldSharesIn"])
 
-
-if __name__ == '__main__':
-    app.run(threaded=True)
