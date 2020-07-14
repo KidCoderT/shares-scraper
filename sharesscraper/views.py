@@ -7,9 +7,7 @@ def home_view():
     if request.method == "POST":
         if request.form.get('searchObject') == '':
             flash("Please enter a name into the search bar to search for the person", "warning")
-            return render_template('home.html', table_data=my_table_data, number=len(my_table_data))
-        else:
-            return redirect(url_for('search_for_view', searchFor=request.form.get('searchObject')))
+        return redirect(url_for('search_for_view', searchFor=request.form.get('searchObject')))
 
     return render_template('home.html', table_data=my_table_data, number=len(my_table_data))
 
