@@ -28,3 +28,6 @@ Note you alson need to install gunicorn into you virtual env
 
 
 > Please tell me what you feel about the  :)
+
+This application uses webscraping, flash messaging, flask, buma(css framework), file structuring, heroku and jinja.
+Note: This entire project has been done by me and me only :)

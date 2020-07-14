@@ -10,14 +10,16 @@
                     <div class="notification is-warning is-light">
                         {{ message }}
                     </div>
-                {% elif category == "error" %}
+                {% endif %}
+
+                {% if category == "error" %}
                     <div class="notification is-danger is-light">
                         {{ message }}
                     </div>
                 {% endif %}
 
             {% endfor %}
-        
+
         {% endif %}
     {% endwith %}
 
