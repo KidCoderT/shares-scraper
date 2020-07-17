@@ -7,6 +7,7 @@ def home_view():
     if request.method == "POST":
         if request.form.get('searchObject') == '':
             flash("Please enter a name into the search bar to search for the person", "warning")
+            return render_template('home.html', table_data=my_table_data, number=len(my_table_data))
         return redirect(url_for('search_for_view', searchFor=request.form.get('searchObject')))
 
     return render_template('home.html', table_data=my_table_data, number=len(my_table_data))
@@ -20,6 +21,7 @@ def detail_view(pk):
 
 @app.route('/query:<searchFor>/')
 def search_for_view(searchFor):
+    print(searchFor)
     search_object = [searchFor.title(), searchFor]
     edited_table = []
     for foo in range(0, len(my_table_data)):
