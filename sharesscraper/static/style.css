@@ -1,4 +1,10 @@
 
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: Monospace;
+}
+
 th a {
     color: black;
 }
