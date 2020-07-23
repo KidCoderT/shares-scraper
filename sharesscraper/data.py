@@ -20,7 +20,7 @@ for div in page_rows:
     splited_data[4] = f"Q1-{dt.year}"
     final_string = ""
     if dt.day >= 22:
-        final_string = div.find("div", class_="col-lg-5").find("a").get("href").split('/')
+        final_string = div.find("div", class_="col-lg-5").find("a").get("href")
     else:
         for foo in splited_data:
             final_string += f"/{foo}"
@@ -39,6 +39,7 @@ def find_chart_data(chart_box):
     return chart_box_data
 
 def detailed_data(url, dataset):
+    print(url)
     data = {
         "name": "",
         "heroTile": "",
